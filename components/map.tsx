@@ -18,17 +18,17 @@ const tourismSpots: TourismSpot[] = [
     id: 1,
     name: "Lembung Mataraman Bendung",
     description: "Bendung air bersejarah yang menjadi simbol Desa Bendung Semin",
-    lat: -7.858661511592048,
-    lng: 110.72306997857926,
+    lat: -7.858665,
+    lng: 110.723066,
     category: "Monumen Bersejarah",
-    image: "/rural-road-construction.png",
+    image: "/lumbung-mataram.jpeg",
   },
   {
     id: 2,
     name: "Desa Wisata Bendung",
     description: "Embung yang indah dengan pemandangan alam yang menakjubkan",
-    lat: -7.85851874586773,
-    lng: 110.72301134603538,
+    lat: -7.858519,
+    lng: 110.723011,
     category: "Wisata Alam",
     image: "/beautiful-village-landscape-with-traditional-house.jpg",
   },
@@ -36,8 +36,8 @@ const tourismSpots: TourismSpot[] = [
     id: 3,
     name: "Desa Wisata Bendung",
     description: "Embung yang indah dengan pemandangan alam yang menakjubkan",
-    lat: -7.85851874586773,
-    lng: 110.72301134603538,
+    lat: -7.858519,
+    lng: 110.723011,
     category: "Wisata Alam",
     image: "/beautiful-village-landscape-with-traditional-house.jpg",
   },
@@ -45,8 +45,8 @@ const tourismSpots: TourismSpot[] = [
     id: 4,
     name: "Desa Wisata Bendung",
     description: "Embung yang indah dengan pemandangan alam yang menakjubkan",
-    lat: -7.85851874586773,
-    lng: 110.72301134603538,
+    lat: -7.858519,
+    lng: 110.723011,
     category: "Wisata Alam",
     image: "/beautiful-village-landscape-with-traditional-house.jpg",
   },
@@ -54,12 +54,11 @@ const tourismSpots: TourismSpot[] = [
     id: 5,
     name: "Desa Wisata Bendung",
     description: "Embung yang indah dengan pemandangan alam yang menakjubkan",
-    lat: -7.85851874586773,
-    lng: 110.72301134603538,
+    lat: -7.858519,
+    lng: 110.723011,
     category: "Wisata Alam",
     image: "/beautiful-village-landscape-with-traditional-house.jpg",
   },
-  
 ]
 
 export default function Map() {
@@ -125,9 +124,9 @@ export default function Map() {
           </div>
           <img src="${spot.image}" alt="${spot.name}" style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px; margin-bottom: 12px;">
           <p style="margin: 0 0 12px 0; font-size: 13px; color: #444; line-height: 1.5;">${spot.description}</p>
-          <a href="https://www.google.com/maps?q=${spot.lat},${spot.lng}&z=15" target="_blank" style="display: inline-block; background-color: #0066cc; color: white; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: 600;">
+          <button onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(spot.name)}/@${spot.lat},${spot.lng},15z', '_blank')" style="display: inline-block; background-color: #0066cc; color: white; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: 600; border: none; cursor: pointer;">
             📍 Buka di Google Maps
-          </a>
+          </button>
         </div>
       `
 
@@ -162,6 +161,11 @@ export default function Map() {
         marker.openPopup()
       }
     }
+  }
+
+  const handleOpenMapsModal = (spot: TourismSpot) => {
+    const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(spot.name)}/@${spot.lat},${spot.lng},15z`
+    window.open(mapsUrl, "_blank")
   }
 
   const scroll = (direction: "up" | "down") => {
@@ -222,17 +226,18 @@ export default function Map() {
               )}
               <div ref={listContainer} className="divide-y divide-border max-h-96 overflow-y-auto">
                 {tourismSpots.map((spot) => (
-                  <button
-                    key={spot.id}
-                    onClick={() => handleSpotClick(spot)}
-                    className={`w-full text-left p-4 transition-all duration-300 ease-in-out hover:bg-green-100 ${
-                      selectedSpot === spot.id ? "bg-green-200" : "bg-card"
-                    }`}
-                  >
-                    <h4 className="font-semibold text-foreground text-sm line-clamp-1">{spot.name}</h4>
-                    <p className="text-xs text-muted-foreground mt-1">{spot.category}</p>
-                    <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{spot.description}</p>
-                  </button>
+                  <div key={spot.id}>
+                    <button
+                      onClick={() => handleSpotClick(spot)}
+                      className={`w-full text-left p-4 transition-all duration-300 ease-in-out hover:bg-green-100 ${
+                        selectedSpot === spot.id ? "bg-green-200" : "bg-card"
+                      }`}
+                    >
+                      <h4 className="font-semibold text-foreground text-sm line-clamp-1">{spot.name}</h4>
+                      <p className="text-xs text-muted-foreground mt-1">{spot.category}</p>
+                      <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{spot.description}</p>
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>
