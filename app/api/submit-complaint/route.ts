@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { put } from "@vercel/blob"
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,9 +22,16 @@ export async function POST(request: NextRequest) {
 
     let imageUrl: string | null = null
     if (image) {
-      const buffer = await image.arrayBuffer()
-      const base64 = Buffer.from(buffer).toString("base64")
-      imageUrl = `data:${image.type};base64,${base64}`
+      try {
+        const blob = await put(`complaints/${Date.now()}-${image.name}`, image, {
+          access: "public",
+        })
+        imageUrl = blob.url
+      } catch (blobError) {
+        console.error("Error uploading to Vercel Blob:", blobError)
+        // Jika upload gagal, tetap lanjut tanpa gambar
+        imageUrl = null
+      }
     }
 
     const dataToSubmit = {
@@ -54,8 +62,6 @@ export async function POST(request: NextRequest) {
       })
     } catch (webhookError) {
       console.error("Error mengirim ke Google Sheets:", webhookError)
-      // Tetap return success karena form submission sudah berhasil,
-      // meski webhook Google Sheets gagal
     }
 
     return NextResponse.json({ message: "Pengaduan berhasil dikirim" }, { status: 200 })
