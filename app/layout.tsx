@@ -11,7 +11,7 @@ const _poppins = Poppins({ weight: ["400", "500", "600", "700"], subsets: ["lati
 // <CHANGE> Updated metadata for village profile website
 export const metadata: Metadata = {
   title: "Desa Sukamaju - Portal Resmi",
-  description: "Portal profil resmi Desa Sukamaju - Informasi, berita, dan layanan publik",
+  description: "Portal profil resmi Desa Bendung, Kecamatan Semin, Gunungkidul.",
   generator: "v0.app",
   icons: {
     icon: [
